@@ -5,7 +5,6 @@ import (
 
 	domain "github.com/isaqueveras/servers-microservices-backend/domain/product"
 	"github.com/isaqueveras/servers-microservices-backend/infrastructure/persistence/product/grpc"
-	"github.com/isaqueveras/servers-microservices-backend/infrastructure/persistence/product/grpc/product"
 	gogrpc "google.golang.org/grpc"
 )
 
@@ -22,6 +21,6 @@ func New(ctx context.Context, conn gogrpc.ClientConnInterface) domain.IProduct {
 }
 
 // GetProducts is a data flow manager to get all products
-func (r *repository) GetProducts() (*product.ListProducts, error) {
+func (r *repository) GetProducts() (*domain.ListProducts, error) {
 	return r.grpcData.GetProducts()
 }

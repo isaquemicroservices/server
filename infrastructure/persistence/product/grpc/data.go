@@ -3,6 +3,7 @@ package grpc
 import (
 	"context"
 
+	domain "github.com/isaqueveras/servers-microservices-backend/domain/product"
 	"github.com/isaqueveras/servers-microservices-backend/infrastructure/persistence/product/grpc/product"
 	gogrpc "google.golang.org/grpc"
 )
@@ -22,11 +23,23 @@ func NewProductDriver(ctx context.Context, conn gogrpc.ClientConnInterface) *Pro
 }
 
 // GetProducts get all products of the database
-func (p *Product) GetProducts() (res *product.ListProducts, err error) {
-	res = new(product.ListProducts)
+func (p *Product) GetProducts() (res *domain.ListProducts, err error) {
+	res = new(domain.ListProducts)
+	var prod domain.Product
 
-	if res, err = p.client.List(p.ctx, &product.Void{}); err != nil {
+	response, err := p.client.List(p.ctx, &product.Void{})
+	if err != nil {
 		return res, err
+	}
+
+	res.Products = make([]domain.Product, len(response.Products))
+	for ii := range res.Products {
+		prod.ID = &response.Products[ii].Id
+		prod.Name = &response.Products[ii].Name
+		prod.Description = &response.Products[ii].Description
+		prod.Price = &response.Products[ii].Price
+
+		res.Products = append(res.Products, prod)
 	}
 
 	return res, nil
