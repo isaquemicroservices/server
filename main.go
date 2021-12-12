@@ -14,15 +14,15 @@ import (
 
 func main() {
 	// Initialize the gin
-	routes := gin.New()
-	// gin.SetMode(gin.ReleaseMode)
+	routes := gin.Default()
+	gin.SetMode(gin.ReleaseMode)
 
 	// middlewares
 	routes.Use(middleware.CORS())
 
 	// Initialize connections with services
 	if err := services.InitializeConnections(); err != nil {
-		log.Fatal(err)
+		log.Fatal("Was not possible to initialize connections with integrated systems", err)
 		return
 	}
 
