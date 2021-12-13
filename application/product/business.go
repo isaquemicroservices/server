@@ -4,6 +4,7 @@ import (
 	"context"
 
 	domain "github.com/isaqueveras/servers-microservices-backend/domain/product"
+
 	"github.com/isaqueveras/servers-microservices-backend/infrastructure/persistence/product"
 	"github.com/isaqueveras/servers-microservices-backend/services/grpc"
 )
@@ -15,22 +16,23 @@ func GetProducts(ctx context.Context) (res *ListProducts, err error) {
 	var (
 		data *domain.ListProducts
 		conn = grpc.GetProductConnection()
-		repo = product.New(ctx, conn)
 	)
 
+	repo := product.New(ctx, conn)
 	if data, err = repo.GetProducts(); err != nil {
 		return res, err
 	}
 
 	defer conn.Close()
 
-	for ii := range data.Products {
-		res.Data = append(res.Data, Product{
-			ID:          data.Products[ii].ID,
-			Name:        data.Products[ii].Name,
-			Description: data.Products[ii].Description,
-			Price:       data.Products[ii].Price,
-		})
+	res.Data = make([]Product, len(data.Products))
+	for i := range data.Products {
+		res.Data[i] = Product{
+			ID:          data.Products[i].ID,
+			Name:        data.Products[i].Name,
+			Description: data.Products[i].Description,
+			Price:       data.Products[i].Price,
+		}
 	}
 
 	return
