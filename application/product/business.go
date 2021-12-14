@@ -55,3 +55,24 @@ func GetDetailsProduct(ctx context.Context, id *int64) (*Product, error) {
 
 	return (*Product)(data), nil
 }
+
+// CreateProduct contains the logic to create a product
+func CreateProduct(ctx context.Context, in *Product) error {
+	var conn = grpc.GetProductConnection()
+
+	var prod = &domain.Product{
+		ID:          in.ID,
+		Name:        in.Name,
+		Description: in.Description,
+		Price:       in.Price,
+	}
+
+	repo := product.New(ctx, conn)
+	if err := repo.CreateProduct(prod); err != nil {
+		return err
+	}
+
+	defer conn.Close()
+
+	return nil
+}

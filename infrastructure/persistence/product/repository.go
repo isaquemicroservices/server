@@ -29,3 +29,8 @@ func (r *repository) GetProducts() (*domain.ListProducts, error) {
 func (r *repository) GetDetailsProduct(id *int64) (*domain.Product, error) {
 	return r.grpcData.GetDetailsProduct(id)
 }
+
+// CreateProduct is a data flow manager to create a product
+func (r *repository) CreateProduct(product *domain.Product) error {
+	return r.grpcData.CreateProduct(product)
+}

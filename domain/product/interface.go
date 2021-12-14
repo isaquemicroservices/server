@@ -4,4 +4,5 @@ package product
 type IProduct interface {
 	GetProducts() (*ListProducts, error)
 	GetDetailsProduct(*int64) (*Product, error)
+	CreateProduct(*Product) error
 }

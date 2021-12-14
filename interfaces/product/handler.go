@@ -66,3 +66,40 @@ func getDetailsProduct(c *gin.Context) {
 
 	c.JSON(200, data)
 }
+
+// addProduct godoc
+// @Summary Create product
+// @Description Create product
+// @Tags Products
+// @Produce json
+// @Success 201 nil nil
+// @Router /product/{id} [get]
+func addProduct(c *gin.Context) {
+	ctx, cancel := context.WithTimeout(c, configuration.ContextWithTimeout)
+	defer cancel()
+
+	var (
+		req product.Product
+		err error
+	)
+
+	if err = c.ShouldBindJSON(&req); err != nil {
+		c.JSON(500, gin.H{
+			"message": "Error while creating a product",
+			"cause":   err.Error(),
+		})
+
+		return
+	}
+
+	if err = product.CreateProduct(ctx, &req); err != nil {
+		c.JSON(500, gin.H{
+			"message": "Error getting details of product",
+			"cause":   err.Error(),
+		})
+
+		return
+	}
+
+	c.JSON(201, nil)
+}
