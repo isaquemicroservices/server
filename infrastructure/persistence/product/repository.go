@@ -24,3 +24,8 @@ func New(ctx context.Context, conn gogrpc.ClientConnInterface) domain.IProduct {
 func (r *repository) GetProducts() (*domain.ListProducts, error) {
 	return r.grpcData.GetProducts()
 }
+
+// GetDetailsProduct is a data flow manager to get the details of product
+func (r *repository) GetDetailsProduct(id *int64) (*domain.Product, error) {
+	return r.grpcData.GetDetailsProduct(id)
+}

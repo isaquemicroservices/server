@@ -37,3 +37,21 @@ func GetProducts(ctx context.Context) (res *ListProducts, err error) {
 
 	return
 }
+
+// GetDetailsProduct contains the logic to fetch the details of product
+func GetDetailsProduct(ctx context.Context, id *int64) (*Product, error) {
+	var (
+		data *domain.Product
+		conn = grpc.GetProductConnection()
+	)
+
+	repo := product.New(ctx, conn)
+	data, err := repo.GetDetailsProduct(id)
+	if err != nil {
+		return nil, err
+	}
+
+	defer conn.Close()
+
+	return (*Product)(data), nil
+}

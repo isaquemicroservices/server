@@ -31,6 +31,7 @@ func main() {
 
 	// Groups for products
 	product.Router(v1.Group("products"))
+	product.RouterWithID(v1.Group("product"))
 
 	grupoErro := errgroup.Group{}
 	grupoErro.Go(func() error {

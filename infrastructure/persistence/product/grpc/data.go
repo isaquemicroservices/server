@@ -22,7 +22,7 @@ func NewProductDriver(ctx context.Context, conn gogrpc.ClientConnInterface) *Pro
 	}
 }
 
-// GetProducts get all products of the database
+// GetProducts get all products on microservice of product
 func (p *Product) GetProducts() (res *domain.ListProducts, err error) {
 	res = new(domain.ListProducts)
 
@@ -42,4 +42,19 @@ func (p *Product) GetProducts() (res *domain.ListProducts, err error) {
 	}
 
 	return
+}
+
+// GetDetailsProduct get details of product on microservice of product
+func (p *Product) GetDetailsProduct(id *int64) (*domain.Product, error) {
+	response, err := p.client.Show(p.ctx, &product.Params{Id: *id})
+	if err != nil {
+		return nil, err
+	}
+
+	return &domain.Product{
+		ID:          &response.Id,
+		Name:        &response.Name,
+		Description: &response.Description,
+		Price:       &response.Price,
+	}, nil
 }

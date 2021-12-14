@@ -6,3 +6,8 @@ import "github.com/gin-gonic/gin"
 func Router(r *gin.RouterGroup) {
 	r.GET("", getProducts)
 }
+
+// Router it's a router of product with id
+func RouterWithID(r *gin.RouterGroup) {
+	r.GET(":id", getDetailsProduct)
+}
