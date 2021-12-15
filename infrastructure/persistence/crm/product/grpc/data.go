@@ -3,8 +3,8 @@ package grpc
 import (
 	"context"
 
-	domain "github.com/isaqueveras/servers-microservices-backend/domain/product"
-	"github.com/isaqueveras/servers-microservices-backend/infrastructure/persistence/product/grpc/product"
+	domain "github.com/isaqueveras/servers-microservices-backend/domain/crm/product"
+	"github.com/isaqueveras/servers-microservices-backend/infrastructure/persistence/crm/product/grpc/product"
 	gogrpc "google.golang.org/grpc"
 )
 

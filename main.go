@@ -6,7 +6,7 @@ import (
 	"github.com/fvbock/endless"
 	"github.com/gin-gonic/gin"
 	"github.com/isaqueveras/servers-microservices-backend/configuration"
-	"github.com/isaqueveras/servers-microservices-backend/interfaces/product"
+	"github.com/isaqueveras/servers-microservices-backend/interfaces/crm"
 	"github.com/isaqueveras/servers-microservices-backend/middleware"
 	"github.com/isaqueveras/servers-microservices-backend/services"
 	"golang.org/x/sync/errgroup"
@@ -17,7 +17,7 @@ func main() {
 	routes := gin.Default()
 	gin.SetMode(gin.ReleaseMode)
 
-	// middlewares
+	// Middlewares
 	routes.Use(middleware.CORS())
 
 	// Initialize connections with services
@@ -26,12 +26,9 @@ func main() {
 		return
 	}
 
-	// Group for the  version first system
+	// Group of routes to the version first system
 	v1 := routes.Group("v1")
-
-	// Groups for products
-	product.Router(v1.Group("products"))
-	product.RouterWithID(v1.Group("product"))
+	crm.Router(v1.Group("crm"))
 
 	grupoErro := errgroup.Group{}
 	grupoErro.Go(func() error {

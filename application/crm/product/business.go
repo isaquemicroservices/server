@@ -3,9 +3,8 @@ package product
 import (
 	"context"
 
-	domain "github.com/isaqueveras/servers-microservices-backend/domain/product"
-
-	"github.com/isaqueveras/servers-microservices-backend/infrastructure/persistence/product"
+	domain "github.com/isaqueveras/servers-microservices-backend/domain/crm/product"
+	"github.com/isaqueveras/servers-microservices-backend/infrastructure/persistence/crm/product"
 	"github.com/isaqueveras/servers-microservices-backend/services/grpc"
 )
 

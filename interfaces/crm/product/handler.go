@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/isaqueveras/servers-microservices-backend/application/product"
+	"github.com/isaqueveras/servers-microservices-backend/application/crm/product"
 	"github.com/isaqueveras/servers-microservices-backend/configuration"
 )
 
@@ -15,7 +15,7 @@ import (
 // @Tags Products
 // @Produce json
 // @Success 200 {object} product.ListProducts "List of products"
-// @Router /products [get]
+// @Router /crm/products [get]
 func getProducts(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c, configuration.ContextWithTimeout)
 	defer cancel()
@@ -39,7 +39,7 @@ func getProducts(c *gin.Context) {
 // @Tags Products
 // @Produce json
 // @Success 200 {object} product.Product "Details of product"
-// @Router /product/{id} [get]
+// @Router /crm/product/{id} [get]
 func getDetailsProduct(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c, configuration.ContextWithTimeout)
 	defer cancel()
@@ -73,7 +73,7 @@ func getDetailsProduct(c *gin.Context) {
 // @Tags Products
 // @Produce json
 // @Success 201 nil nil
-// @Router /product/{id} [get]
+// @Router /crm/product/{id} [get]
 func addProduct(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c, configuration.ContextWithTimeout)
 	defer cancel()
@@ -101,5 +101,5 @@ func addProduct(c *gin.Context) {
 		return
 	}
 
-	c.JSON(201, nil)
+	c.JSON(201, gin.H{"message": "Product created with success"})
 }
