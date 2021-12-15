@@ -61,7 +61,11 @@ func (p *Product) GetDetailsProduct(id *int64) (*domain.Product, error) {
 
 // CreateProduct create a product on microservice of product
 func (p *Product) CreateProduct(in *domain.Product) error {
-	if _, err := p.client.Add(p.ctx, &product.Product{}); err != nil {
+	if _, err := p.client.Add(p.ctx, &product.Product{
+		Name:        *in.Name,
+		Description: *in.Description,
+		Price:       *in.Price,
+	}); err != nil {
 		return err
 	}
 
