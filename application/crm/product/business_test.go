@@ -4,41 +4,116 @@ import (
 	"context"
 	"log"
 	"testing"
+	"time"
 
-	"github.com/isaqueveras/servers-microservices-backend/configuration"
-	"github.com/isaqueveras/servers-microservices-backend/infrastructure/persistence/crm/product"
 	"github.com/isaqueveras/servers-microservices-backend/services"
-	"github.com/isaqueveras/servers-microservices-backend/services/grpc"
+	"github.com/isaqueveras/servers-microservices-backend/utils"
 	"github.com/stretchr/testify/assert"
 )
 
+var (
+	ctx            context.Context = context.Background()
+	ctxWithSuccess                 = time.Second * 2
+	ctxWithError                   = time.Second * 0
+)
+
+// TestProduct function of tests for methods the of product domain on application
 func TestProduct(t *testing.T) {
 	// Initializing connections with microservices gRPC
 	if err := services.InitializeConnections(); err != nil {
 		log.Fatal(err)
 	}
 
-	// Initializing context with timeout for calls gRPC
-	var ctx, cancel = context.WithTimeout(context.Background(), configuration.ContextWithTimeout)
-	defer cancel()
+	// Initializing context with timeout for calls gRPC for context with success
+	var (
+		// Context duration for success
+		ctxWithSuccess, cancelWithSuccess = context.WithTimeout(ctx, ctxWithSuccess)
+		// Context duration for errors
+		ctxWithError, cancelWithError = context.WithTimeout(ctx, ctxWithError)
+	)
 
-	// TestGetAllProducts business test to get all products
-	t.Run("TestGetAllProducts", func(t *testing.T) {
-		// Get connection with microservice of products
-		conn := grpc.GetProductConnection()
+	// Defers for contexts
+	defer cancelWithSuccess()
+	defer cancelWithError()
 
-		// Validator to know connection is not null with gRPC
-		assert.NotNil(t, conn)
+	// TestGetAllProduct business test to gel all products with success and error
+	t.Run("TestGetAllProduct", func(t *testing.T) {
+		// WithSuccess business test to get all products with success
+		t.Run("WithSuccess", func(t *testing.T) {
+			data, err := GetProducts(ctxWithSuccess)
+			assert.NoError(t, err)
+			assert.NotNil(t, data.Data)
+			assert.NotEmpty(t, data.Data)
+		})
 
-		// Initializing repository of product
-		var repo = product.New(ctx, conn)
+		// WithError business test to get all products with error
+		t.Run("WithError", func(t *testing.T) {
+			data, err := GetProducts(ctxWithError)
 
-		// Get products in call gRPC
-		var data, err = repo.GetProducts()
-		defer conn.Close()
+			// Validations
+			assert.Error(t, err)
+			assert.Nil(t, data.Data)
+		})
+	})
 
-		// Validations
-		assert.Equal(t, err, nil)
-		assert.NotEqual(t, data, nil)
+	// TestGetDetailsProduct business test to get details of products with status of success and errors
+	t.Run("TestGetDetailsProduct", func(t *testing.T) {
+		// WithSuccess business test to get details of product with success
+		t.Run("WithSuccess", func(t *testing.T) {
+			var productID int64 = 1
+			var data, err = GetDetailsProduct(ctxWithSuccess, &productID)
+
+			// Validations
+			assert.Equal(t, err, nil)
+			assert.NotEqual(t, data, nil)
+		})
+
+		// WithSuccess business test to get details of product with errors
+		t.Run("WithError", func(t *testing.T) {
+			var productID int64 = 12453586
+			var data, err = GetDetailsProduct(ctxWithError, &productID)
+
+			// Validations
+			assert.Error(t, err)
+			assert.Nil(t, data)
+		})
+	})
+
+	// TestCreateProduct business test to get details of products with status of success and errors
+	t.Run("TestCreateProduct", func(t *testing.T) {
+		// Variable to errors
+		var err error
+
+		// WithSuccess business test to create product with success
+		t.Run("WithSuccess", func(t *testing.T) {
+			var product = &Product{
+				Name:        utils.GetPointerString("Coffee"),
+				Description: utils.GetPointerString("Coffee is darkly colored, bitter, slightly acidic and has a stimulating effect in humans, primarily due to its caffeine content."),
+				Price:       utils.GetPointerFloat64(24.69),
+			}
+
+			// Create product
+			err = CreateProduct(ctxWithSuccess, product)
+
+			// Validations
+			assert.Equal(t, *product.Name, "Coffee")
+			assert.Nil(t, err)
+		})
+
+		// WithError business test to create product with errors
+		t.Run("WithError", func(t *testing.T) {
+			var product = &Product{
+				Name:        utils.GetPointerString("Chocolate"),
+				Description: utils.GetPointerString("chocolate, food product made from cocoa beans, consumed as candy and used to make beverages and to flavour or coat various confections and bakery products."),
+				Price:       utils.GetPointerFloat64(24.69),
+			}
+
+			// Create product
+			err = CreateProduct(ctxWithError, product)
+
+			// Validations
+			assert.Equal(t, *product.Name, "Chocolate")
+			assert.NotNil(t, err)
+		})
 	})
 }
