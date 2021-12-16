@@ -8,5 +8,5 @@ const (
 	// url of product service
 	ProductURL = "localhost:50051"
 	// Timeout to context
-	ContextWithTimeout = time.Second * 10
+	ContextWithTimeout = time.Second * 2
 )

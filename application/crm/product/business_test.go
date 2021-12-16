@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 	"testing"
-	"time"
 
+	"github.com/isaqueveras/servers-microservices-backend/configuration"
 	"github.com/isaqueveras/servers-microservices-backend/infrastructure/persistence/crm/product"
 	"github.com/isaqueveras/servers-microservices-backend/services"
 	"github.com/isaqueveras/servers-microservices-backend/services/grpc"
@@ -19,7 +19,7 @@ func TestProduct(t *testing.T) {
 	}
 
 	// Initializing context with timeout for calls gRPC
-	var ctx, cancel = context.WithTimeout(context.Background(), time.Second*1)
+	var ctx, cancel = context.WithTimeout(context.Background(), configuration.ContextWithTimeout)
 	defer cancel()
 
 	// TestGetAllProducts business test to get all products
