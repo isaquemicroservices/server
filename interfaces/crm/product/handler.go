@@ -15,7 +15,7 @@ import (
 // @Tags Products
 // @Produce json
 // @Success 200 {object} product.ListProducts "List of products"
-// @Router /crm/products [get]
+// @Router /v1/crm/products [get]
 func getProducts(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c, configuration.ContextWithTimeout)
 	defer cancel()
@@ -39,7 +39,7 @@ func getProducts(c *gin.Context) {
 // @Tags Products
 // @Produce json
 // @Success 200 {object} product.Product "Details of product"
-// @Router /crm/product/{id} [get]
+// @Router /v1/crm/product/{id} [get]
 func getDetailsProduct(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c, configuration.ContextWithTimeout)
 	defer cancel()
@@ -73,7 +73,7 @@ func getDetailsProduct(c *gin.Context) {
 // @Tags Products
 // @Produce json
 // @Success 201 nil nil
-// @Router /crm/product/{id} [get]
+// @Router /v1/crm/products [post]
 func addProduct(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c, configuration.ContextWithTimeout)
 	defer cancel()
