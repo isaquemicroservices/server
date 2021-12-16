@@ -1,6 +1,7 @@
 package grpc
 
 import (
+	"context"
 	"sync"
 
 	"github.com/isaqueveras/servers-microservices-backend/configuration"
@@ -15,7 +16,10 @@ var (
 
 // InitializeProductConnections open connections with service gRPC
 func InitializeProductConnections(config *configuration.Configuration) (err error) {
-	if productConnection, err = gogrpc.Dial(config.ProductAddress, gogrpc.WithInsecure(), gogrpc.WithBlock()); err != nil {
+	ctx, cancel := context.WithTimeout(context.Background(), configuration.Get().ContextWithTimeout)
+	defer cancel()
+
+	if productConnection, err = gogrpc.DialContext(ctx, config.ProductAddress, gogrpc.WithInsecure(), gogrpc.WithBlock()); err != nil {
 		return err
 	}
 
