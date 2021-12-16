@@ -1,21 +1,26 @@
 # Servers microservices backend
 
 ### Implements microservice of [product](https://github.com/isaqueveras/products-microservice)
-> Product microservice build in golang and gRPC
+Product microservice build in golang and gRPC
 
-### Constants of system
-```go
-const (
-  // port of server
-  PortServer = "localhost:8080"
-  // url of product service
-  ProductURL = "localhost:50051"
-  // Timeout to context
-  ContextWithTimeout = time.Second * 10
-)
+### Create folder for config.json file
+```bat
+$ sudo mkdir /etc/server-ms-backend
+$ sudo touch /etc/server-ms-backend/config.json
+$ sudo cp ./config.json /etc/server-ms-backend/config.json
+$ sudo chmod 777 /etc/server-ms-backend/config.json
+```
+if you changed the config.json file, use the command at the bottom to update the config.json file on your computer
+```bat
+$ sudo cp ./config.json /etc/server-ms-backend/config.json
+```
+
+### Command to run server
+```bat
+$ go run main.go
 ```
 
 ### Command to run the test
-```go
+```bat
 $ go test ./... --cover
 ```

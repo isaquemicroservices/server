@@ -1,0 +1,6 @@
+{
+	"name_application": "server microservices backend",
+	"server_address": "localhost:8080",
+	"product_address": "localhost:50051",
+	"context_timeout": 2000000000 
+}

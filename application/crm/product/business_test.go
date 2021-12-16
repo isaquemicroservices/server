@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/isaqueveras/servers-microservices-backend/configuration"
 	"github.com/isaqueveras/servers-microservices-backend/services"
 	"github.com/isaqueveras/servers-microservices-backend/utils"
 	"github.com/stretchr/testify/assert"
@@ -19,8 +20,11 @@ var (
 
 // TestProduct function of tests for methods the of product domain on application
 func TestProduct(t *testing.T) {
+	// loading config of system
+	configuration.Load()
+
 	// Initializing connections with microservices gRPC
-	if err := services.InitializeConnections(); err != nil {
+	if err := services.InitializeConnections(configuration.Get()); err != nil {
 		log.Fatal(err)
 	}
 

@@ -10,6 +10,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/isaqueveras/servers-microservices-backend/application/crm/product"
+	"github.com/isaqueveras/servers-microservices-backend/configuration"
 	"github.com/isaqueveras/servers-microservices-backend/services"
 	"github.com/isaqueveras/servers-microservices-backend/utils"
 	"github.com/stretchr/testify/assert"
@@ -18,7 +19,10 @@ import (
 func TestProduct(t *testing.T) {
 	router := gin.Default()
 
-	if err := services.InitializeConnections(); err != nil {
+	// loading config of system
+	configuration.Load()
+
+	if err := services.InitializeConnections(configuration.Get()); err != nil {
 		log.Fatal(err)
 	}
 

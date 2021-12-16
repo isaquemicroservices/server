@@ -13,15 +13,17 @@ import (
 )
 
 func main() {
-	// Initialize the gin
-	routes := gin.Default()
-	gin.SetMode(gin.ReleaseMode)
+	// Initializing the gin
+	routes := gin.New()
+
+	// loading config of system
+	configuration.Load()
 
 	// Middlewares
 	routes.Use(middleware.CORS())
 
 	// Initialize connections with services
-	if err := services.InitializeConnections(); err != nil {
+	if err := services.InitializeConnections(configuration.Get()); err != nil {
 		log.Fatal("Was not possible to initialize connections with integrated systems", err)
 		return
 	}
@@ -32,7 +34,7 @@ func main() {
 
 	grupoErro := errgroup.Group{}
 	grupoErro.Go(func() error {
-		return endless.ListenAndServe(configuration.PortServer, routes)
+		return endless.ListenAndServe(configuration.Get().ServerAddress, routes)
 	})
 
 	// Initialize the server

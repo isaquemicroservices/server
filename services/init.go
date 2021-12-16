@@ -1,12 +1,13 @@
 package services
 
 import (
+	config "github.com/isaqueveras/servers-microservices-backend/configuration"
 	"github.com/isaqueveras/servers-microservices-backend/services/grpc"
 )
 
 // InitializeConnections initialize persistent connections with services backends
-func InitializeConnections() (err error) {
-	if err = grpc.InitializeProductConnections(); err != nil {
+func InitializeConnections(config *config.Configuration) (err error) {
+	if err = grpc.InitializeProductConnections(config); err != nil {
 		return err
 	}
 

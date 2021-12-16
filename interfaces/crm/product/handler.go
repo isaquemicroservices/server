@@ -17,7 +17,7 @@ import (
 // @Success 200 {object} product.ListProducts "List of products"
 // @Router /v1/crm/products [get]
 func getProducts(c *gin.Context) {
-	ctx, cancel := context.WithTimeout(c, configuration.ContextWithTimeout)
+	ctx, cancel := context.WithTimeout(c, configuration.Get().ContextWithTimeout)
 	defer cancel()
 
 	data, err := product.GetProducts(ctx)
@@ -41,7 +41,7 @@ func getProducts(c *gin.Context) {
 // @Success 200 {object} product.Product "Details of product"
 // @Router /v1/crm/product/{id} [get]
 func getDetailsProduct(c *gin.Context) {
-	ctx, cancel := context.WithTimeout(c, configuration.ContextWithTimeout)
+	ctx, cancel := context.WithTimeout(c, configuration.Get().ContextWithTimeout)
 	defer cancel()
 
 	productID, err := strconv.ParseInt(c.Param("id"), 10, 64)
@@ -75,7 +75,7 @@ func getDetailsProduct(c *gin.Context) {
 // @Success 201 nil nil
 // @Router /v1/crm/products [post]
 func addProduct(c *gin.Context) {
-	ctx, cancel := context.WithTimeout(c, configuration.ContextWithTimeout)
+	ctx, cancel := context.WithTimeout(c, configuration.Get().ContextWithTimeout)
 	defer cancel()
 
 	var (

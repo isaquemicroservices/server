@@ -14,8 +14,8 @@ var (
 )
 
 // InitializeProductConnections open connections with service gRPC
-func InitializeProductConnections() (err error) {
-	if productConnection, err = gogrpc.Dial(configuration.ProductURL, gogrpc.WithInsecure(), gogrpc.WithBlock()); err != nil {
+func InitializeProductConnections(config *configuration.Configuration) (err error) {
+	if productConnection, err = gogrpc.Dial(config.ProductAddress, gogrpc.WithInsecure(), gogrpc.WithBlock()); err != nil {
 		return err
 	}
 
@@ -28,7 +28,7 @@ func GetProductConnection() *gogrpc.ClientConn {
 	defer productMutex.Unlock()
 
 	if state := productConnection.GetState(); state != connectivity.Ready {
-		_ = InitializeProductConnections()
+		_ = InitializeProductConnections(configuration.Get())
 	}
 
 	return productConnection
