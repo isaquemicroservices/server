@@ -1,10 +1,8 @@
 # Servers microservices backend
 
-### Implements microservice of [product](https://github.com/isaqueveras/products-microservice)
-Product microservice build in golang and gRPC
-
-### Implements microservice of [authentication](https://github.com/isaqueveras/authentication-microservice)
-Authentication microservice build in golang and gRPC
+## (2) Microservices built with golang and gRPC
+- [Product](https://github.com/isaqueveras/products-microservice)
+- [Authentication](https://github.com/isaqueveras/authentication-microservice)
 
 ### Create folder for config.json file
 ```bat
