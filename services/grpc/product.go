@@ -19,7 +19,7 @@ func InitializeProductConnections(config *configuration.Configuration) (err erro
 	ctx, cancel := context.WithTimeout(context.Background(), configuration.Get().ContextWithTimeout)
 	defer cancel()
 
-	if productConnection, err = gogrpc.DialContext(ctx, config.ProductAddress, gogrpc.WithInsecure(), gogrpc.WithBlock()); err != nil {
+	if productConnection, err = gogrpc.DialContext(ctx, config.MSProduct.Address, gogrpc.WithInsecure(), gogrpc.WithBlock()); err != nil {
 		return err
 	}
 

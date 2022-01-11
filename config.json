@@ -1,6 +1,15 @@
 {
 	"name_application": "server microservices backend",
 	"server_address": "localhost:8080",
-	"product_address": "localhost:50051",
-	"context_timeout": 2000000000 
+	"context_timeout": 2000000000,
+	"microservice_product" : {
+		"name": "Microservice to products",
+		"description": "Microservice to manage products",
+		"address": "localhost:50051"
+	},
+	"microservice_authentication": {
+		"name": "Microservice to authentication",
+		"description": "Microservice for authentication of the users",
+		"address": "localhost:50052"
+	}
 }
