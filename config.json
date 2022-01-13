@@ -2,6 +2,7 @@
 	"name_application": "server microservices backend",
 	"server_address": "localhost:8080",
 	"context_timeout": 2000000000,
+	"jwt_secret_key": "devkey",
 	"microservice_product" : {
 		"name": "Microservice to products",
 		"description": "Microservice to manage products",

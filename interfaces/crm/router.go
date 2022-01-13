@@ -2,6 +2,7 @@ package crm
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/isaqueveras/servers-microservices-backend/interfaces/crm/auth"
 	"github.com/isaqueveras/servers-microservices-backend/interfaces/crm/product"
 )
 
@@ -9,4 +10,6 @@ import (
 func Router(r *gin.RouterGroup) {
 	product.Router(r.Group("products"))
 	product.RouterWithID(r.Group("product"))
+
+	auth.Router(r.Group("auth"))
 }

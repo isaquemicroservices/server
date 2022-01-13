@@ -19,3 +19,11 @@ func New(ctx context.Context, conn gogrpc.ClientConnInterface) domain.IAuth {
 		grpcData: grpc.NewAuthDriver(ctx, conn),
 	}
 }
+
+func (r *repository) CreateUser(user *domain.User) (err error) {
+	return r.grpcData.CreateUser(user)
+}
+
+func (r *repository) Login(user *domain.Credentials) (*domain.User, error) {
+	return r.grpcData.Login(user)
+}
