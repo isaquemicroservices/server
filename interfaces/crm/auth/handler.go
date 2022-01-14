@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/isaqueveras/servers-microservices-backend/application/crm/auth"
 	"github.com/isaqueveras/servers-microservices-backend/configuration"
+	"github.com/isaqueveras/servers-microservices-backend/middleware"
 )
 
 func create(c *gin.Context) {
@@ -50,12 +51,9 @@ func login(c *gin.Context) {
 		return
 	}
 
-	c.SetCookie("token", data.Token, 3600, "/", c.ClientIP(), false, true)
+	c.Set("session", middleware.Session{
+		Name: data.Name,
+	})
 
 	c.JSON(200, data)
-}
-
-func logout(c *gin.Context) {
-	c.SetCookie("token", "", -3600, "/", c.ClientIP(), false, true)
-	c.JSON(200, gin.H{"message": "successfully logged out"})
 }

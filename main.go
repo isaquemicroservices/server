@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/isaqueveras/servers-microservices-backend/configuration"
 	"github.com/isaqueveras/servers-microservices-backend/interfaces/crm"
+	"github.com/isaqueveras/servers-microservices-backend/interfaces/crm/auth"
 	"github.com/isaqueveras/servers-microservices-backend/middleware"
 	"github.com/isaqueveras/servers-microservices-backend/services"
 	"golang.org/x/sync/errgroup"
@@ -31,6 +32,10 @@ func main() {
 	// Group of routes to the version first system
 	v1 := routes.Group("v1")
 	crm.Router(v1.Group("crm"))
+
+	// Router for authorization
+	auth.RouterWithAuth(v1.Group("auth"))
+	auth.RouterWithoutAuth(v1.Group("auth"))
 
 	grupoErro := errgroup.Group{}
 	grupoErro.Go(func() error {
