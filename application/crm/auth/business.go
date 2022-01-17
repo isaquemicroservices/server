@@ -18,9 +18,9 @@ func Create(ctx context.Context, in *User) (err error) {
 	defer conn.Close()
 
 	var user = &domain.User{
-		Name:  in.Name,
-		Email: in.Email,
-		Passw: in.Passw,
+		Name:  *in.Name,
+		Email: *in.Email,
+		Passw: *in.Passw,
 	}
 
 	if err = repo.CreateUser(user); err != nil {
@@ -50,10 +50,12 @@ func Login(ctx context.Context, in *CredentialsReq) (res *User, err error) {
 	}
 
 	return &User{
-		Id:    data.Id,
-		Name:  data.Name,
-		Email: data.Email,
-		Passw: data.Passw,
-		Token: data.Token,
+		Id:        &data.Id,
+		Name:      &data.Name,
+		Email:     &data.Email,
+		Passw:     nil,
+		Token:     &data.Token,
+		CreateAt:  nil,
+		UpdatedAt: nil,
 	}, nil
 }

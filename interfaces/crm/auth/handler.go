@@ -7,6 +7,7 @@ import (
 	"github.com/isaqueveras/servers-microservices-backend/application/crm/auth"
 	"github.com/isaqueveras/servers-microservices-backend/configuration"
 	"github.com/isaqueveras/servers-microservices-backend/middleware"
+	"github.com/isaqueveras/servers-microservices-backend/utils"
 )
 
 func create(c *gin.Context) {
@@ -52,7 +53,8 @@ func login(c *gin.Context) {
 	}
 
 	c.Set("session", middleware.Session{
-		Name: data.Name,
+		Name:          data.Name,
+		Administrator: utils.GetPointerBool(true),
 	})
 
 	c.JSON(200, data)

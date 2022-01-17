@@ -11,8 +11,8 @@ import (
 )
 
 type Session struct {
-	Administrator bool   `json:"administrator,omitempty"`
-	Name          string `json:"name,omitempty"`
+	Administrator *bool   `json:"administrator,omitempty"`
+	Name          *string `json:"name,omitempty"`
 	jwt.StandardClaims
 }
 
@@ -56,39 +56,42 @@ func AuthorizationGin() gin.HandlerFunc {
 		}
 
 		sess := new(Session)
-		if decoded, err = jwt.ParseWithClaims(token[7:], sess, func(t *jwt.Token) (interface{}, error) {
+		if decoded, err = jwt.ParseWithClaims(token, sess, func(token *jwt.Token) (interface{}, error) {
+			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+				return nil, errors.New("unexpected signing method: " + token.Header["alg"].(string))
+			}
 			return []byte(configuration.Get().SecretKey), nil
 		}); err != nil {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "You do not have permission"})
 			return
 		}
 
-		claims := decoded.Claims.(*Session)
-		if claims.Issuer != "isaqueveras.auth" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "You do not have permission"})
+		if claims, ok := decoded.Claims.(*Session); ok && decoded.Valid {
+			if claims.Issuer != "isaqueveras.auth" {
+				c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Token issuer is not valid"})
+				return
+			}
 			return
 		}
 
-		c.Set("session", *sess)
 		c.Next()
 	}
 }
 
-// GetGinSession is a short hand to retrieve a session from a gin context
-func GetGinSession(c *gin.Context) (sess *Session, err error) {
+// GetSession get session on context of request
+func GetSession(c *gin.Context) (sess *Session, err error) {
 	var (
-		value interface{}
-		ok    bool
+		v  interface{}
+		ok bool
 	)
 
-	if value, ok = c.Get("session"); !ok {
-		return nil, errors.New("invalid session")
+	if v, ok = c.Get("session"); !ok {
+		return nil, errors.New("Invalid session")
 	}
 
-	if value, ok := value.(Session); ok {
-		sess = &value
+	if val, ok2 := v.(Session); ok2 {
+		sess = &val
 		return
 	}
 
-	return nil, errors.New("invalid session")
+	return nil, errors.New("Invalid session")
 }
