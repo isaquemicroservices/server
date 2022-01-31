@@ -1,6 +1,10 @@
 package configuration
 
-import "time"
+import (
+	"time"
+
+	"github.com/dgrijalva/jwt-go"
+)
 
 // Configuration main configuration struct
 type Configuration struct {
@@ -16,4 +20,11 @@ type microservice struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Address     string `json:"address"`
+}
+
+// Session session model
+type Session struct {
+	Administrator *bool   `json:"administrator,omitempty"`
+	Name          *string `json:"name,omitempty"`
+	jwt.StandardClaims
 }
