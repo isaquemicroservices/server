@@ -10,6 +10,7 @@ import (
 	"github.com/isaqueveras/servers-microservices-backend/interfaces/crm/auth"
 	"github.com/isaqueveras/servers-microservices-backend/middleware"
 	"github.com/isaqueveras/servers-microservices-backend/services"
+	"github.com/isaqueveras/servers-microservices-backend/services/synchronization"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -28,6 +29,9 @@ func main() {
 		log.Fatal("Was not possible to initialize connections with integrated systems", err)
 		return
 	}
+
+	// Initializing synchronization with scripts
+	synchronization.InitSynchronization()
 
 	// Group of routes to the version first system
 	v1 := routes.Group("v1")

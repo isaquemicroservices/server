@@ -78,3 +78,13 @@ func decodeJWT(token string, secret string) (sess *config.Session, err error) {
 
 	return nil, errors.New("Token content is not valid")
 }
+
+// AdminOnly
+func AdminOnly() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if sess, err := GetSession(c); err != nil || !*sess.Permission.IsAdmin {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+	}
+}

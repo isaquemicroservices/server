@@ -24,7 +24,15 @@ type microservice struct {
 
 // Session session model
 type Session struct {
-	Administrator *bool   `json:"administrator,omitempty"`
-	Name          *string `json:"name,omitempty"`
+	Name       *string    `json:"name,omitempty"`
+	Email      *string    `json:"email,omitempty"`
+	Permission *UserLevel `json:"permission,omitempty"`
 	jwt.StandardClaims
+}
+
+// UserLevel permission model of user
+type UserLevel struct {
+	IsAdmin *bool   `json:"is_admin,omitempty"`
+	ID      *int64  `json:"id,omitempty"`
+	Name    *string `json:"name,omitempty"`
 }
