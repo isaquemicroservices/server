@@ -38,8 +38,7 @@ func main() {
 	crm.Router(v1.Group("crm"))
 
 	// Router for authorization
-	auth.RouterWithAuth(v1.Group("auth"))
-	auth.RouterWithoutAuth(v1.Group("auth"))
+	auth.RouterAuth(v1.Group("auth"))
 
 	grupoErro := errgroup.Group{}
 	grupoErro.Go(func() error {
