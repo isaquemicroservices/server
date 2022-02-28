@@ -76,3 +76,31 @@ func CreateProduct(ctx context.Context, in *Product) error {
 
 	return nil
 }
+
+// ListAllProductsWithMinimumQuantity contains the logic to fetch a list of products with minimum quantity
+func ListAllProductsWithMinimumQuantity(ctx context.Context) (res *ListProducts, err error) {
+	res = new(ListProducts)
+
+	var (
+		data *domain.ListProducts
+		conn = grpc.GetProductConnection()
+	)
+
+	repo := product.New(ctx, conn)
+	if data, err = repo.ListAllProductsWithMinimumQuantity(); err != nil {
+		return res, err
+	}
+
+	defer conn.Close()
+
+	res.Data = make([]Product, len(data.Products))
+	for i := range data.Products {
+		res.Data[i] = Product{
+			ID:     data.Products[i].ID,
+			Name:   data.Products[i].Name,
+			Amount: data.Products[i].Amount,
+		}
+	}
+
+	return
+}

@@ -34,3 +34,8 @@ func (r *repository) GetDetailsProduct(id *int64) (*domain.Product, error) {
 func (r *repository) CreateProduct(product *domain.Product) error {
 	return r.grpcData.CreateProduct(product)
 }
+
+// ListAllProductsWithMinimumQuantity is a data flow manager to list all products with minimum quantity
+func (r *repository) ListAllProductsWithMinimumQuantity() (*domain.ListProducts, error) {
+	return r.grpcData.ListAllProductsWithMinimumQuantity()
+}

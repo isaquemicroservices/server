@@ -71,3 +71,24 @@ func (p *Product) CreateProduct(in *domain.Product) error {
 
 	return nil
 }
+
+// ListAllProductsWithMinimumQuantity get all products with minumum quantity on microservice of product
+func (p *Product) ListAllProductsWithMinimumQuantity() (res *domain.ListProducts, err error) {
+	res = new(domain.ListProducts)
+
+	response, err := p.client.ListAllProductsWithMinimumQuantity(p.ctx, &product.Void{})
+	if err != nil {
+		return res, err
+	}
+
+	res.Products = make([]domain.Product, len(response.Products))
+	for i := range response.Products {
+		res.Products[i] = domain.Product{
+			ID:     &response.Products[i].Id,
+			Name:   &response.Products[i].Name,
+			Amount: &response.Products[i].Amount,
+		}
+	}
+
+	return
+}

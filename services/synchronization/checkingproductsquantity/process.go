@@ -27,7 +27,7 @@ func Watcher() {
 			log.Println("checkingproductsquantity/process: Signal to terminate execution was received")
 			continueLoop = false
 		case cannelError := <-errorChannel:
-			log.Println(cannelError.Error())
+			log.Println("checkingproductsquantity/process: " + cannelError.Error())
 		}
 	}
 }
@@ -38,7 +38,7 @@ func routineRecover(errorChannel chan error, routine func(chan error)) {
 			const messagePanic string = "[SCRIPT] >> [PANIC] >> A panic was identified during the execution of the scripts"
 			if value, ok := rec.(error); ok {
 				// TODO: add messagePanic on value of error
-				log.Println(value.Error())
+				log.Println(value)
 				errorChannel <- value
 			} else {
 				fmt.Printf(messagePanic+": %v\n", rec)
