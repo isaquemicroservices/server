@@ -6,13 +6,7 @@ import (
 )
 
 // Router it's a router of auth
-func RouterWithAuth(r *gin.RouterGroup) {
-	r.Use(middleware.AuthorizationGin())
-
-	r.POST("/create", create)
-}
-
-// Router it's a router
-func RouterWithoutAuth(r *gin.RouterGroup) {
+func RouterAuth(r *gin.RouterGroup) {
+	r.POST("/create", middleware.AuthorizationGin(), create)
 	r.POST("/login", login)
 }
