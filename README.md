@@ -1,10 +1,10 @@
-# Servers microservices backend
+# Microservices Servers 
 
-## (4) Microservices built with golang and gRPC
-- [Product](https://github.com/isaqueveras/products-microservice)
-- [Authentication](https://github.com/isaqueveras/authentication-microservice)
-- [Customer](github.com/isaqueveraslabs/customer-microservice)
-- [Email](https://github.com/isaqueveraslabs/email-microservice)
+## (4) Microservices built with Golang, gRPC and PostgreSQL.
+- [Product](https://github.com/isaquemicroservices/products)
+- [Authentication](https://github.com/isaquemicroservices/authentication)
+- [Customer](github.com/isaquemicroservices/customer)
+- [Email](https://github.com/isaquemicroservices/email)
 
 ### Create folder for config.json file
 ```bat
