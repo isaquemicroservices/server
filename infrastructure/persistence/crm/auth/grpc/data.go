@@ -5,6 +5,7 @@ import (
 
 	domain "github.com/isaqueveras/servers-microservices-backend/domain/crm/auth"
 	auth "github.com/isaqueveras/servers-microservices-backend/infrastructure/persistence/crm/auth/grpc/auth"
+	"github.com/isaqueveras/servers-microservices-backend/oops"
 	gogrpc "google.golang.org/grpc"
 )
 
@@ -29,7 +30,7 @@ func (a *Auth) CreateUser(in *domain.User) (err error) {
 		Email: in.Email,
 		Passw: in.Passw,
 	}); err != nil {
-		return err
+		return oops.Err(err)
 	}
 
 	return
@@ -46,7 +47,7 @@ func (a *Auth) Login(user *domain.Credentials) (*domain.User, error) {
 		Email: user.Email,
 		Passw: user.Passw,
 	}); err != nil {
-		return nil, err
+		return nil, oops.Err(err)
 	}
 
 	return &domain.User{
