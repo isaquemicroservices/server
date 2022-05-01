@@ -5,11 +5,13 @@ import (
 
 	domain "github.com/isaqueveras/servers-microservices-backend/domain/crm/auth"
 	infra "github.com/isaqueveras/servers-microservices-backend/infrastructure/persistence/crm/auth"
+	"github.com/isaqueveras/servers-microservices-backend/oops"
 	"github.com/isaqueveras/servers-microservices-backend/services/grpc"
 )
 
 // Create contains the logic to create a user
 func Create(ctx context.Context, in *User) (err error) {
+	const errorMessage string = "Error in logic to create user"
 	var (
 		conn = grpc.GetAuthConnection()
 		repo = infra.New(ctx, conn)
@@ -24,7 +26,7 @@ func Create(ctx context.Context, in *User) (err error) {
 	}
 
 	if err = repo.CreateUser(user); err != nil {
-		return err
+		return oops.Wrap(err, errorMessage)
 	}
 
 	return nil
@@ -32,6 +34,7 @@ func Create(ctx context.Context, in *User) (err error) {
 
 // Login contains the logic to authentication a user
 func Login(ctx context.Context, in *CredentialsReq) (res *User, err error) {
+	const errorMessage string = "Error in the logic to login the user"
 	var (
 		conn = grpc.GetAuthConnection()
 		repo = infra.New(ctx, conn)
@@ -46,7 +49,7 @@ func Login(ctx context.Context, in *CredentialsReq) (res *User, err error) {
 	}
 
 	if data, err = repo.Login(user); err != nil {
-		return nil, err
+		return nil, oops.Wrap(err, errorMessage)
 	}
 
 	return &User{

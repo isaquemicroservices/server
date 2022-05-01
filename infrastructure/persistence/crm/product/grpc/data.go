@@ -5,6 +5,7 @@ import (
 
 	domain "github.com/isaqueveras/servers-microservices-backend/domain/crm/product"
 	"github.com/isaqueveras/servers-microservices-backend/infrastructure/persistence/crm/product/grpc/product"
+	"github.com/isaqueveras/servers-microservices-backend/oops"
 	gogrpc "google.golang.org/grpc"
 )
 
@@ -28,7 +29,7 @@ func (p *Product) GetProducts() (res *domain.ListProducts, err error) {
 
 	response, err := p.client.List(p.ctx, &product.Void{})
 	if err != nil {
-		return res, err
+		return nil, oops.Err(err)
 	}
 
 	res.Products = make([]domain.Product, len(response.Products))
@@ -48,7 +49,7 @@ func (p *Product) GetProducts() (res *domain.ListProducts, err error) {
 func (p *Product) GetDetailsProduct(id *int64) (*domain.Product, error) {
 	response, err := p.client.Show(p.ctx, &product.Params{Id: *id})
 	if err != nil {
-		return nil, err
+		return nil, oops.Err(err)
 	}
 
 	return &domain.Product{
@@ -66,7 +67,7 @@ func (p *Product) CreateProduct(in *domain.Product) error {
 		Description: *in.Description,
 		Price:       *in.Price,
 	}); err != nil {
-		return err
+		return oops.Err(err)
 	}
 
 	return nil
@@ -78,7 +79,7 @@ func (p *Product) ListAllProductsWithMinimumQuantity() (res *domain.ListProducts
 
 	response, err := p.client.ListAllProductsWithMinimumQuantity(p.ctx, &product.Void{})
 	if err != nil {
-		return res, err
+		return nil, oops.Err(err)
 	}
 
 	res.Products = make([]domain.Product, len(response.Products))

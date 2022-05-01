@@ -5,11 +5,13 @@ import (
 
 	domain "github.com/isaqueveras/servers-microservices-backend/domain/crm/product"
 	"github.com/isaqueveras/servers-microservices-backend/infrastructure/persistence/crm/product"
+	"github.com/isaqueveras/servers-microservices-backend/oops"
 	"github.com/isaqueveras/servers-microservices-backend/services/grpc"
 )
 
 // GetProducts contains the logic to fetch a list of products
 func GetProducts(ctx context.Context) (res *ListProducts, err error) {
+	const errorMessage string = "Error getting products"
 	res = new(ListProducts)
 
 	var (
@@ -19,7 +21,7 @@ func GetProducts(ctx context.Context) (res *ListProducts, err error) {
 
 	repo := product.New(ctx, conn)
 	if data, err = repo.GetProducts(); err != nil {
-		return res, err
+		return nil, oops.Wrap(err, errorMessage)
 	}
 
 	defer conn.Close()
@@ -39,6 +41,7 @@ func GetProducts(ctx context.Context) (res *ListProducts, err error) {
 
 // GetDetailsProduct contains the logic to fetch the details of product
 func GetDetailsProduct(ctx context.Context, id *int64) (*Product, error) {
+	const errorMessage string = "Error getting product details"
 	var (
 		data *domain.Product
 		conn = grpc.GetProductConnection()
@@ -47,7 +50,7 @@ func GetDetailsProduct(ctx context.Context, id *int64) (*Product, error) {
 	repo := product.New(ctx, conn)
 	data, err := repo.GetDetailsProduct(id)
 	if err != nil {
-		return nil, err
+		return nil, oops.Wrap(err, errorMessage)
 	}
 
 	defer conn.Close()
@@ -57,6 +60,7 @@ func GetDetailsProduct(ctx context.Context, id *int64) (*Product, error) {
 
 // CreateProduct contains the logic to create a product
 func CreateProduct(ctx context.Context, in *Product) error {
+	const errorMessage string = "Error when registering product"
 	var (
 		conn = grpc.GetProductConnection()
 		repo = product.New(ctx, conn)
@@ -69,7 +73,7 @@ func CreateProduct(ctx context.Context, in *Product) error {
 	)
 
 	if err := repo.CreateProduct(prod); err != nil {
-		return err
+		return oops.Wrap(err, errorMessage)
 	}
 
 	defer conn.Close()
@@ -79,6 +83,7 @@ func CreateProduct(ctx context.Context, in *Product) error {
 
 // ListAllProductsWithMinimumQuantity contains the logic to fetch a list of products with minimum quantity
 func ListAllProductsWithMinimumQuantity(ctx context.Context) (res *ListProducts, err error) {
+	const errorMessage string = "Error listing all products with minimum quantity"
 	res = new(ListProducts)
 
 	var (
@@ -88,7 +93,7 @@ func ListAllProductsWithMinimumQuantity(ctx context.Context) (res *ListProducts,
 
 	repo := product.New(ctx, conn)
 	if data, err = repo.ListAllProductsWithMinimumQuantity(); err != nil {
-		return res, err
+		return nil, oops.Wrap(err, errorMessage)
 	}
 
 	defer conn.Close()
