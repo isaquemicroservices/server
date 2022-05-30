@@ -13,6 +13,7 @@ type Configuration struct {
 	ContextWithTimeout time.Duration `json:"context_timeout"`
 	MSProduct          microservice  `json:"microservice_product"`
 	MSAuthentication   microservice  `json:"microservice_authentication"`
+	MSEmail            microservice  `json:"microservice_email"`
 	SecretKey          string        `json:"jwt_secret_key"`
 }
 

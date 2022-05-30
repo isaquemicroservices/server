@@ -86,5 +86,6 @@ func sendEmail(_ context.Context, products []productApp.Product, group, processe
 		log.Println(v)
 	}
 
+	log.Println("Email sent!")
 	errorConsecutive.Done()
 }

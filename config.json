@@ -12,5 +12,10 @@
 		"name": "Microservice to authentication",
 		"description": "Microservice for authentication of the users",
 		"address": "localhost:50052"
+	},
+	"microservice_email": {
+		"name": "Microservice to email",
+		"description": "Microservice for send email",
+		"address": "localhost:50054"
 	}
 }

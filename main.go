@@ -26,7 +26,7 @@ func main() {
 
 	// Initialize connections with services
 	if err := services.InitializeConnections(configuration.Get()); err != nil {
-		log.Fatal("Was not possible to initialize connections with integrated systems", err)
+		log.Fatal("Was not possible to initialize connections with integrated systems: ", err)
 		return
 	}
 

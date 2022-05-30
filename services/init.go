@@ -15,5 +15,9 @@ func InitializeConnections(config *config.Configuration) (err error) {
 		return err
 	}
 
+	if err = grpc.InitializeEmailConnections(config); err != nil {
+		return err
+	}
+
 	return
 }
